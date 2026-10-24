@@ -1,0 +1,22 @@
+services:
+  api:
+    build: .
+    env_file: .env
+    environment:
+      AGENTIC_DB_PATH: /app/data/agentic.sqlite3
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - agentic_data:/app/data
+    restart: unless-stopped
+  worker:
+    build: .
+    command: ["python", "-m", "agentic.worker"]
+    env_file: .env
+    environment:
+      AGENTIC_DB_PATH: /app/data/agentic.sqlite3
+    volumes:
+      - agentic_data:/app/data
+    restart: unless-stopped
+volumes:
+  agentic_data:
